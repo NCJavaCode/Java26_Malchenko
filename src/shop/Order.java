@@ -8,7 +8,7 @@ package shop;
  * @version 1.0
  */
 public class Order {
-    /** Унікальний номер замовлення */
+    /** Унікальний номер замовлння */
     private String orderId;
 
     /** Поточний статус замовлення */
