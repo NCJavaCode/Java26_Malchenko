@@ -8,17 +8,31 @@ import java.util.Objects;
  * @author Мальченко Ростислав
  * @version 1.0
  */
-public class Product {
+public class Product implements Cloneable {
     private String productId;
     private String name;
-    private double price;       // Примітивний тип 1
-    private int quantity;       // Примітивний тип 2
+    private double price;
+    private int quantity;
 
     public Product(String productId, String name, double price, int quantity) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+    }
+
+    /**
+     * Конструктор копіювання для класу Product.
+     *
+     * @param other об'єкт Product для копіювання
+     */
+    public Product(Product other) {
+        if (other != null) {
+            this.productId = other.productId;
+            this.name = other.name;
+            this.price = other.price;
+            this.quantity = other.quantity;
+        }
     }
 
     public double getPrice() {
@@ -46,13 +60,6 @@ public class Product {
         System.out.println("Товар: " + name + ", Ціна: " + price + " грн, Кількість: " + quantity);
     }
 
-    /**
-     * Перевизначений метод equals() для порівняння об'єктів за посиланнями та значеннями полів.
-     * Використовує дві примітивні змінні: price та quantity.
-     *
-     * @param o об'єкт для порівняння
-     * @return true, якщо об'єкти еквівалентні
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,13 +71,22 @@ public class Product {
                 Objects.equals(name, product.name);
     }
 
-    /**
-     * Перевизначений метод hashCode(), узгоджений із методом equals().
-     *
-     * @return цілочисельний хеш-код об'єкта
-     */
     @Override
     public int hashCode() {
         return Objects.hash(productId, name, price, quantity);
+    }
+
+    /**
+     * Перевизначений метод clone() для створення копії товару.
+     *
+     * @return клонований об'єкт Product
+     */
+    @Override
+    public Product clone() {
+        try {
+            return (Product) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
