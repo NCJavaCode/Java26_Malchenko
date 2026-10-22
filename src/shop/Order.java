@@ -65,7 +65,7 @@ public class Order implements Cloneable {
      * Перевизначений метод clone() для глибокого клонування замовлення.
      * (Завдання 1)
      *
-     * @return клонований об'єкт Order
+     * @return клонований об'єкт Orde
      */
     @Override
     public Order clone() {
