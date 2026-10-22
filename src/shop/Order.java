@@ -11,6 +11,12 @@ public class Order implements Cloneable {
     private String status;
     private Product[] products;
 
+    /**
+     * Конструктор замовлення.
+     *
+     * @param orderId  ідентифікатор
+     * @param products масив товарів
+     */
     public Order(String orderId, Product[] products) {
         this.orderId = orderId;
         this.products = products;
@@ -18,8 +24,7 @@ public class Order implements Cloneable {
     }
 
     /**
-     * Конструктор копіювання для глибокого клонування об'єкта Order.
-     * (Завдання 2)
+     * Конструктор копіювання.
      *
      * @param other об'єкт Order для копіювання
      */
@@ -38,6 +43,30 @@ public class Order implements Cloneable {
         }
     }
 
+    /**
+     * Отримує товар з масиву за індексом з обробкою виходу за межі масиву.
+     * (Завдання 1)
+     *
+     * @param index індекс товару
+     * @return об'єкт Product або null у разі помилки
+     */
+    public Product getProductByIndex(int index) {
+        try {
+            return products[index];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            int maxIndex = (products != null) ? products.length - 1 : 0;
+            System.err.println("Помилка: ArrayIndexOutOfBoundsException! " +
+                    "Спроба звернення до некоректного індексу: " + index +
+                    ". Допустимі межі індексів: від 0 до " + maxIndex);
+            return null;
+        }
+    }
+
+    /**
+     * Обчислює загальну вартість замовлення.
+     *
+     * @return сумарна вартість
+     */
     public double calculateTotal() {
         double total = 0.0;
         if (products != null) {
@@ -48,6 +77,32 @@ public class Order implements Cloneable {
             }
         }
         return total;
+    }
+
+    /**
+     * Додає новий товар у замовлення з обробкою передачі null.
+     * (Завдання 2)
+     *
+     * @param product новий товар для додавання
+     */
+    public void addProduct(Product product) {
+        try {
+            if (product == null) {
+                throw new NullPointerException("Передано порожній об'єкт товара!");
+            }
+            if (products == null) {
+                products = new Product[1];
+                products[0] = product;
+            } else {
+                Product[] newProducts = new Product[products.length + 1];
+                System.arraycopy(products, 0, newProducts, 0, products.length);
+                newProducts[products.length] = product;
+                products = newProducts;
+            }
+            System.out.println("Товар " + product.getName() + " успішно додано.");
+        } catch (NullPointerException e) {
+            System.err.println("Помилка: NullPointerException! Об'єкт класу Product відсутній (null). " + e.getMessage());
+        }
     }
 
     public void updateStatus(int statusCode) {
@@ -61,12 +116,6 @@ public class Order implements Cloneable {
         }
     }
 
-    /**
-     * Перевизначений метод clone() для глибокого клонування замовлення.
-     * (Завдання 1)
-     *
-     * @return клонований об'єкт Orde
-     */
     @Override
     public Order clone() {
         try {
